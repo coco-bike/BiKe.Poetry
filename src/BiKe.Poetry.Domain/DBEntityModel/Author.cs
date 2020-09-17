@@ -1,9 +1,11 @@
 ﻿using BiKe.Poetry.Enums;
 using System;
+using System.ComponentModel.DataAnnotations.Schema;
 using Volo.Abp.Domain.Entities.Auditing;
 
 namespace BiKe.Poetry
 {
+    [Table("AppAuthor")]
     public class Author : AuditedAggregateRoot<Guid>
     {
         /// <summary>

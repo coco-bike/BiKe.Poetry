@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq.Dynamic.Core;
+using System.Threading.Tasks;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 
@@ -12,6 +14,6 @@ namespace BiKe.Poetry
           CreateUpdateAuthorDto, //用于创建
           CreateUpdateAuthorDto> //用于更新
     {
-        //Task<PagedResult<AuthorDto>> ListResultDtoPageAsync(int skipCount, int pageSize, string name);
+        Task<PagedResultDto<AuthorDto>> ListResultDtoPageAsync(int skipCount, int pageSize, string name);
     }
 }

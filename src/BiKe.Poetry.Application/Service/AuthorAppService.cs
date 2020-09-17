@@ -1,4 +1,12 @@
-﻿using System;
+﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using BiKe.Poetry.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Dynamic.Core;
+using System.Threading.Tasks;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 using Volo.Abp.Domain.Repositories;
@@ -10,24 +18,24 @@ namespace BiKe.Poetry
                         CreateUpdateAuthorDto, CreateUpdateAuthorDto>,
     IAuthorAppService
     {
-        //private readonly IMapper mapper;
-        public AuthorAppService(IRepository<Author, Guid> repository)
+        private readonly IRepository<Author, Guid> _authorRepository;
+        public AuthorAppService(IRepository<Author, Guid> repository
+            )
             : base(repository)
         {
-            //this.mapper = mapper;
+            _authorRepository = repository;
         }
-        //public async Task<PagedResult<AuthorDto>> ListResultDtoPageAsync(int skipCount, int pageSize, string name)
-        //{
-        //    var authorDtos = new List<AuthorDto>();
-        //    var query = Repository.WhereIf(string.IsNullOrEmpty(name), s => s.Name.Contains(name)).AsQueryable();
-        //    var result = query.Skip(skipCount).Take(pageSize).ToList();
-        //    var list = mapper.Map<List<Author>, IQueryable<AuthorDto>>(result);
-        //    var totalCount = query.Count();
-        //    return new PagedResult<AuthorDto>()
-        //    {
-        //        Queryable = list,
-        //        RowCount = totalCount,
-        //    };
-        //}
+        public async Task<PagedResultDto<AuthorDto>> ListResultDtoPageAsync(int skipCount, int pageSize, string name)
+        {
+            var query = _authorRepository.AsTracking();
+            var list = await query.Skip(skipCount).Take(pageSize).ToListAsync();
+            var rows = ObjectMapper.Map<List<Author>, List<AuthorDto>>(list);
+            return new PagedResultDto<AuthorDto>()
+            {
+                Rows = rows,
+                PageCount = pageSize,
+                RowCount= query.Count()
+            };
+        }
     }
 }
