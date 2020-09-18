@@ -25,16 +25,16 @@ namespace BiKe.Poetry
         {
             _authorRepository = repository;
         }
-        public async Task<PagedResultDto<AuthorDto>> ListResultDtoPageAsync(int skipCount, int pageSize, string name)
+        public async Task<PagedResultDto<AuthorDto>> ListResultDtoPageAsync(int pageIndex, int pageSize, string name)
         {
             var query = _authorRepository.AsTracking();
-            var list = await query.Skip(skipCount).Take(pageSize).ToListAsync();
+            var list = await query.Skip((pageIndex-1)*pageSize).Take(pageSize).ToListAsync();
             var rows = ObjectMapper.Map<List<Author>, List<AuthorDto>>(list);
             return new PagedResultDto<AuthorDto>()
             {
                 Rows = rows,
                 PageCount = pageSize,
-                RowCount= query.Count()
+                RowCount =await query.CountAsync()
             };
         }
     }

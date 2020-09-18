@@ -14,6 +14,6 @@ namespace BiKe.Poetry
           CreateUpdateAuthorDto, //用于创建
           CreateUpdateAuthorDto> //用于更新
     {
-        Task<PagedResultDto<AuthorDto>> ListResultDtoPageAsync(int skipCount, int pageSize, string name);
+        Task<PagedResultDto<AuthorDto>> ListResultDtoPageAsync(int pageIndex, int pageSize, string name);
     }
 }

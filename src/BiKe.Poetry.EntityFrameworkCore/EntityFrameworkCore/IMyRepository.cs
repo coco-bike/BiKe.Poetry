@@ -1,9 +1,11 @@
-﻿namespace BiKe.Poetry.EntityFrameworkCore
-{
-    //public interface IMyRepository : BaseRepository<T, Guid>
-    //{
-    //    public IMyRepository(IFreeSql fsql) : base(fsql, null, null) { }
+﻿using System;
+using Volo.Abp.Domain.Entities;
+using Volo.Abp.Domain.Repositories;
 
-    //    //在这里增加 CURD 以外的方法
+namespace BiKe.Poetry.EntityFrameworkCore
+{
+    //public interface IMyRepository<TEntity, Guid> : IRepository<TEntity, Guid> where TEntity : class, IEntity<Guid>
+    //{
+       
     //}
 }
