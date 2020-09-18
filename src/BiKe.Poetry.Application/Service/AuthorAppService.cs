@@ -30,6 +30,7 @@ namespace BiKe.Poetry
             var query = _authorRepository.AsTracking();
             var list = await query.Skip((pageIndex-1)*pageSize).Take(pageSize).ToListAsync();
             var rows = ObjectMapper.Map<List<Author>, List<AuthorDto>>(list);
+            await _authorRepository.GetDbSet<Author, Guid>().AddRangeAsync();
             return new PagedResultDto<AuthorDto>()
             {
                 Rows = rows,
