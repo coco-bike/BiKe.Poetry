@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 
@@ -16,6 +17,6 @@ namespace BiKe.Poetry.IService
       CreateUpdateLunYuDto, //用于创建
       CreateUpdateLunYuDto> //用于更新
     {
-
+        Task<bool> ReceiveMessage(DateTime dateTime); 
     }
 }

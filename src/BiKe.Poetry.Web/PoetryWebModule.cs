@@ -27,6 +27,10 @@ using Volo.Abp.UI.Navigation.Urls;
 using Volo.Abp.UI.Navigation;
 using Volo.Abp.VirtualFileSystem;
 using Volo.Abp.AspNetCore.ExceptionHandling;
+using System;
+using BiKe.Poetry.IService;
+using PoetryApi.Service;
+using BiKe.Poetry.Event;
 
 namespace BiKe.Poetry.Web
 {
@@ -73,7 +77,42 @@ namespace BiKe.Poetry.Web
             ConfigureAutoApiControllers();
             ConfigureSwaggerServices(context.Services);
             ConfiguerException(context.Services);
+            ConfiguerCAP(context.Services, configuration);
         }
+
+        /// <summary>
+        /// CAP事件总线
+        /// </summary>
+        /// <param name="services"></param>
+        private void ConfiguerCAP(IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddDbContext<PoetryDbContext>(); //Options, If you are using EF as the ORM
+
+            //事件配置
+            services.AddTransient<TestEvent>();
+
+            services.AddCap(x =>
+            {
+                // If you are using EF, you need to add the configuration：
+                x.UseEntityFramework<PoetryDbContext>(); //Options, Notice: You don't need to config x.UseSqlServer(""") again! CAP can autodiscovery.
+
+                x.UsePostgreSql(configuration["ConnectionStrings:Default"]);
+
+                // CAP support RabbitMQ,Kafka,AzureService as the MQ, choose to add configuration you needed：
+                x.UseRabbitMQ(options =>
+                {
+                    options.HostName = configuration["RabbitMQ:HostName"];
+                    options.Port = Convert.ToInt32(configuration["RabbitMQ:Port"]);
+                    options.UserName = configuration["RabbitMQ:UserName"];
+                    options.Password = configuration["RabbitMQ:Password"];
+                    //options.VirtualHost = configuration["RabbitMQ:VirtualHost"];
+                });
+
+                //仪表盘
+                x.UseDashboard();
+            });
+        }
+
         /// <summary>
         /// 异常抛出
         /// </summary>

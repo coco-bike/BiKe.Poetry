@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using BiKe.Poetry.EntityFrameworkCore;
+using DotNetCore.CAP;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -19,23 +20,28 @@ namespace BiKe.Poetry
     IAuthorAppService
     {
         private readonly IRepository<Author, Guid> _authorRepository;
-        public AuthorAppService(IRepository<Author, Guid> repository
+        private readonly ICapPublisher _capBus;
+        public AuthorAppService(IRepository<Author, Guid> repository, ICapPublisher capPublisher
             )
             : base(repository)
         {
             _authorRepository = repository;
+            _capBus = capPublisher;
         }
-        public async Task<PagedResultDto<AuthorDto>> ListResultDtoPageAsync(int pageIndex, int pageSize, string name)
+        public async Task<PagedResultDto<AuthorDto>> ListResultDtoPageAsync(int currentPage, int pageSize, string name)
         {
             var query = _authorRepository.AsTracking();
-            var list = await query.Skip((pageIndex-1)*pageSize).Take(pageSize).ToListAsync();
+            var list = await query.Skip((currentPage-1)*pageSize).Take(pageSize).ToListAsync();
             var rows = ObjectMapper.Map<List<Author>, List<AuthorDto>>(list);
-            await _authorRepository.GetDbSet<Author, Guid>().AddRangeAsync();
+            //await _authorRepository.GetDbSet<Author, Guid>().AddRangeAsync();
+            await _capBus.PublishAsync("now", DateTime.Now);
             return new PagedResultDto<AuthorDto>()
             {
                 Rows = rows,
                 PageCount = pageSize,
-                RowCount =await query.CountAsync()
+                RowCount =await query.CountAsync(),
+                PageSize=currentPage,
+                CurrentPage=currentPage,
             };
         }
     }
