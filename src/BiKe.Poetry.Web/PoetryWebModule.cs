@@ -28,9 +28,11 @@ using Volo.Abp.UI.Navigation;
 using Volo.Abp.VirtualFileSystem;
 using Volo.Abp.AspNetCore.ExceptionHandling;
 using System;
-using BiKe.Poetry.IService;
-using PoetryApi.Service;
 using BiKe.Poetry.Event;
+using Volo.Abp.BackgroundJobs.Hangfire;
+using Hangfire;
+using Hangfire.PostgreSql;
+using Volo.Abp.BackgroundJobs;
 
 namespace BiKe.Poetry.Web
 {
@@ -44,7 +46,8 @@ namespace BiKe.Poetry.Web
         typeof(AbpAspNetCoreMvcUiBasicThemeModule),
         typeof(AbpAspNetCoreAuthenticationJwtBearerModule),
         typeof(AbpTenantManagementWebModule),
-        typeof(AbpAspNetCoreSerilogModule)
+        typeof(AbpAspNetCoreSerilogModule),
+        typeof(AbpBackgroundJobsHangfireModule)
         )]
     public class PoetryWebModule : AbpModule
     {
@@ -78,6 +81,23 @@ namespace BiKe.Poetry.Web
             ConfigureSwaggerServices(context.Services);
             ConfiguerException(context.Services);
             ConfiguerCAP(context.Services, configuration);
+            ConfigureHangfire(context.Services, configuration);
+        }
+        /// <summary>
+        /// Hangfire后台任务
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="configuration"></param>
+        private void ConfigureHangfire(IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddHangfire(config =>
+            {
+                config.UsePostgreSqlStorage(configuration["ConnectionStrings:Default"]);
+            });
+            Configure<AbpBackgroundJobWorkerOptions>(options =>
+            {
+                options.DefaultTimeout = 864000; //10 days (as seconds)
+            });
         }
 
         /// <summary>
@@ -249,6 +269,7 @@ namespace BiKe.Poetry.Web
             app.UseAuditing();
             app.UseAbpSerilogEnrichers();
             app.UseConfiguredEndpoints();
+            app.UseHangfireDashboard();
         }
     }
 }

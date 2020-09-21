@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using BiKe.Poetry.EntityFrameworkCore;
+using BiKe.Poetry.Job;
 using DotNetCore.CAP;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -10,6 +11,7 @@ using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
+using Volo.Abp.BackgroundJobs;
 using Volo.Abp.Domain.Repositories;
 
 namespace BiKe.Poetry
@@ -21,12 +23,15 @@ namespace BiKe.Poetry
     {
         private readonly IRepository<Author, Guid> _authorRepository;
         private readonly ICapPublisher _capBus;
-        public AuthorAppService(IRepository<Author, Guid> repository, ICapPublisher capPublisher
+        private readonly IBackgroundJobManager _backgroundJobManager;
+
+        public AuthorAppService(IRepository<Author, Guid> repository, ICapPublisher capPublisher, IBackgroundJobManager backgroundJobManager
             )
             : base(repository)
         {
             _authorRepository = repository;
             _capBus = capPublisher;
+            _backgroundJobManager = backgroundJobManager;
         }
         public async Task<PagedResultDto<AuthorDto>> ListResultDtoPageAsync(int currentPage, int pageSize, string name)
         {
@@ -35,6 +40,7 @@ namespace BiKe.Poetry
             var rows = ObjectMapper.Map<List<Author>, List<AuthorDto>>(list);
             //await _authorRepository.GetDbSet<Author, Guid>().AddRangeAsync();
             await _capBus.PublishAsync("now", DateTime.Now);
+            await _backgroundJobManager.EnqueueAsync("你好");
             return new PagedResultDto<AuthorDto>()
             {
                 Rows = rows,
