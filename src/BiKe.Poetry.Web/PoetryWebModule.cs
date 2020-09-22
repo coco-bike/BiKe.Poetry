@@ -33,6 +33,7 @@ using Volo.Abp.BackgroundJobs.Hangfire;
 using Hangfire;
 using Hangfire.PostgreSql;
 using Volo.Abp.BackgroundJobs;
+using Volo.Abp.Caching;
 
 namespace BiKe.Poetry.Web
 {
@@ -47,7 +48,8 @@ namespace BiKe.Poetry.Web
         typeof(AbpAspNetCoreAuthenticationJwtBearerModule),
         typeof(AbpTenantManagementWebModule),
         typeof(AbpAspNetCoreSerilogModule),
-        typeof(AbpBackgroundJobsHangfireModule)
+        typeof(AbpBackgroundJobsHangfireModule),
+        typeof(AbpCachingModule)
         )]
     public class PoetryWebModule : AbpModule
     {
