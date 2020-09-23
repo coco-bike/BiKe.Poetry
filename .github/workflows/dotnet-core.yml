@@ -1,0 +1,30 @@
+name: .NET Core
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+     - uses: actions/checkout@v2
+     - name: Setup .NET Core
+       uses: actions/setup-dotnet@v1
+       with:
+        dotnet-version: 3.1.101
+     - name: Docker Build & Push to Docker Hub
+       uses: opspresso/action-docker@master
+       with:
+        args: --docker
+       env:
+        USERNAME: ${{ secrets.DOCKER_USERNAME }}
+        PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+        DOCKERFILE: "src/BiKe.Poetry.Web/Dockerfile"
+        IMAGE_NAME: "sbkdockerhub/bike.poetry"
+        TAG_NAME: "v0.0.1"
+        LATEST: "true"
