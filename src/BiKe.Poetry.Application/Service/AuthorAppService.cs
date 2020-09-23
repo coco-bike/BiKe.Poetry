@@ -43,7 +43,7 @@ namespace BiKe.Poetry
             var query = _authorRepository.AsTracking();
             //await _authorRepository.GetDbSet<Author, Guid>().AddRangeAsync();
             await _capBus.PublishAsync("now", DateTime.Now);
-            await _backgroundJobManager.EnqueueAsync("你好");
+            //await _backgroundJobManager.EnqueueAsync("你好");
             var rows = await _cache.GetOrAddAsync("PageList",
                 async () =>
                 {
