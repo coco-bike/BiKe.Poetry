@@ -24,7 +24,7 @@ jobs:
        env:
         USERNAME: ${{ secrets.DOCKER_USERNAME }}
         PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-        DOCKERFILE: "src/BiKe.Poetry.WebDockerfile"
+        DOCKERFILE: "src/BiKe.Poetry/Dockerfile"
         IMAGE_NAME: "sbkdockerhub/bike.poetry"
         TAG_NAME: "v0.0.1"
         LATEST: "true"
