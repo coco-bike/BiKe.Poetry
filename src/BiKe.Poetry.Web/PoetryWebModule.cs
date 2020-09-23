@@ -83,7 +83,7 @@ namespace BiKe.Poetry.Web
             ConfigureSwaggerServices(context.Services);
             ConfiguerException(context.Services);
             ConfiguerCAP(context.Services, configuration);
-            //ConfigureHangfire(context.Services, configuration);
+            ConfigureHangfire(context.Services, configuration);
         }
         /// <summary>
         /// Hangfire后台任务
