@@ -80,10 +80,10 @@ namespace BiKe.Poetry.Web
             ConfigureLocalizationServices();
             ConfigureNavigationServices();
             ConfigureAutoApiControllers();
-            ConfigureSwaggerServices(context.Services);
-            ConfiguerException(context.Services);
             ConfiguerCAP(context.Services, configuration);
             ConfigureHangfire(context.Services, configuration);
+            ConfigureSwaggerServices(context.Services);
+            ConfiguerException(context.Services);
         }
         /// <summary>
         /// Hangfire后台任务
@@ -268,10 +268,10 @@ namespace BiKe.Poetry.Web
             {
                 options.SwaggerEndpoint("/swagger/v1/swagger.json", "Poetry API");
             });
+            app.UseHangfireDashboard();
             app.UseAuditing();
             app.UseAbpSerilogEnrichers();
             app.UseConfiguredEndpoints();
-            app.UseHangfireDashboard();
         }
     }
 }

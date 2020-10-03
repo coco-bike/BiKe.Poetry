@@ -1,4 +1,5 @@
 ﻿using DotNetCore.CAP;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Logging;
@@ -21,29 +22,28 @@ namespace BiKe.Poetry
     IAuthorAppService
     {
         private readonly IRepository<Author, Guid> _authorRepository;
-        private readonly ICapPublisher _capBus;
-        private readonly IBackgroundJobManager _backgroundJobManager;
-        private readonly ILogger _logger;
+        //private readonly ICapPublisher _capBus;
+        //private readonly IBackgroundJobManager _backgroundJobManager;
         private readonly IDistributedCache<List<AuthorDto>> _cache;
 
         public AuthorAppService(IRepository<Author, Guid> repository,
-            ICapPublisher capPublisher,
-            IBackgroundJobManager backgroundJobManager,
+            //ICapPublisher capPublisher,
+            //IBackgroundJobManager backgroundJobManager,
             IDistributedCache<List<AuthorDto>> cache
             )
             : base(repository)
         {
             _authorRepository = repository;
-            _capBus = capPublisher;
-            _backgroundJobManager = backgroundJobManager;
+            //_capBus = capPublisher;
+            //_backgroundJobManager = backgroundJobManager;
             _cache = cache;
         }
         public async Task<PagedResultDto<AuthorDto>> ListResultDtoPageAsync(int currentPage, int pageSize, string name)
         {
             var query = _authorRepository.AsTracking();
             //await _authorRepository.GetDbSet<Author, Guid>().AddRangeAsync();
-            await _capBus.PublishAsync("now", DateTime.Now);
-            //await _backgroundJobManager.EnqueueAsync("你好");
+            //await _capBus.PublishAsync("now", DateTime.Now);
+            //await _backgroundJobManager.EnqueueAsync("asdada", BackgroundJobPriority.Normal);
             var rows = await _cache.GetOrAddAsync("PageList",
                 async () =>
                 {
@@ -53,6 +53,7 @@ namespace BiKe.Poetry
                 {
                     AbsoluteExpiration = DateTimeOffset.Now.AddHours(1)
                 });
+            await _authorRepository.DeleteAsync(s => s.Name == "asdas");
             return new PagedResultDto<AuthorDto>()
             {
                 Rows = rows,
@@ -61,6 +62,12 @@ namespace BiKe.Poetry
                 PageSize = currentPage,
                 CurrentPage = currentPage,
             };
+        }
+        [HttpGet]
+        public async Task<bool> TestJob()
+        {
+            //await _backgroundJobManager.EnqueueAsync(2, BackgroundJobPriority.Normal);
+            return true;
         }
     }
 }

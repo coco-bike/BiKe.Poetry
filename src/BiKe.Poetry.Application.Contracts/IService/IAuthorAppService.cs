@@ -15,5 +15,7 @@ namespace BiKe.Poetry
           CreateUpdateAuthorDto> //用于更新
     {
         Task<PagedResultDto<AuthorDto>> ListResultDtoPageAsync(int currentPage, int pageSize, string name);
+
+        Task<bool> TestJob();
     }
 }
