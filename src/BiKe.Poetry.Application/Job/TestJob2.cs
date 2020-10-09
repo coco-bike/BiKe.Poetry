@@ -6,16 +6,16 @@ using Volo.Abp.DependencyInjection;
 
 namespace BiKe.Poetry.Job
 {
-    //public class TestJob2 : BackgroundJob<int>, ITransientDependency
-    //{
+    public class TestJob2 : BackgroundJob<int>, ITransientDependency
+    {
 
-    //    public TestJob2()
-    //    {
+        public TestJob2()
+        {
 
-    //    }
-    //    public override void Execute(int args)
-    //    {
-    //        Console.WriteLine(args);
-    //    }
-    //}
+        }
+        public override void Execute(int args)
+        {
+            Console.WriteLine(args);
+        }
+    }
 }

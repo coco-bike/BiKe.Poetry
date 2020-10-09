@@ -26,14 +26,14 @@ using Volo.Abp.TenantManagement.Web;
 using Volo.Abp.UI.Navigation.Urls;
 using Volo.Abp.UI.Navigation;
 using Volo.Abp.VirtualFileSystem;
+using Volo.Abp.BackgroundJobs.Hangfire;
+using Volo.Abp.Caching;
 using Volo.Abp.AspNetCore.ExceptionHandling;
 using System;
-using BiKe.Poetry.Event;
-using Volo.Abp.BackgroundJobs.Hangfire;
+using Volo.Abp.BackgroundJobs;
 using Hangfire;
 using Hangfire.PostgreSql;
-using Volo.Abp.BackgroundJobs;
-using Volo.Abp.Caching;
+using BiKe.Poetry.Event;
 
 namespace BiKe.Poetry.Web
 {
@@ -80,9 +80,9 @@ namespace BiKe.Poetry.Web
             ConfigureLocalizationServices();
             ConfigureNavigationServices();
             ConfigureAutoApiControllers();
+            ConfigureSwaggerServices(context.Services);
             ConfiguerCAP(context.Services, configuration);
             ConfigureHangfire(context.Services, configuration);
-            ConfigureSwaggerServices(context.Services);
             ConfiguerException(context.Services);
         }
         /// <summary>
