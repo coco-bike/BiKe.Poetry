@@ -34,6 +34,7 @@ using Volo.Abp.BackgroundJobs;
 using Hangfire;
 using Hangfire.PostgreSql;
 using BiKe.Poetry.Event;
+using BiKe.Poetry.Setting;
 
 namespace BiKe.Poetry.Web
 {
@@ -72,6 +73,8 @@ namespace BiKe.Poetry.Web
         {
             var hostingEnvironment = context.Services.GetHostingEnvironment();
             var configuration = context.Services.GetConfiguration();
+
+            ConfigurationSetting.ConnectionString = configuration["ConnectionStrings:Default"];
 
             ConfigureUrls(configuration);
             ConfigureAuthentication(context, configuration);

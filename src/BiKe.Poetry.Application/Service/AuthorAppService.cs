@@ -1,4 +1,5 @@
-﻿using DotNetCore.CAP;
+﻿using BiKe.Poetry.EntityFrameworkCore;
+using DotNetCore.CAP;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Distributed;
@@ -41,7 +42,8 @@ namespace BiKe.Poetry
         public async Task<PagedResultDto<AuthorDto>> ListResultDtoPageAsync(int currentPage, int pageSize, string name)
         {
             var query = _authorRepository.AsTracking();
-            //await _authorRepository.GetDbSet<Author, Guid>().AddRangeAsync();
+            //var ss = PoetyFreeSqlDbContext.GetFreeSql().Select<Author>().ToList();
+            await _authorRepository.GetDbSet<Author, Guid>().AddRangeAsync();
             await _capBus.PublishAsync("now", DateTime.Now);
             await _backgroundJobManager.EnqueueAsync("asdada", BackgroundJobPriority.Normal);
             var rows = await _cache.GetOrAddAsync("PageList",
@@ -54,11 +56,14 @@ namespace BiKe.Poetry
                     AbsoluteExpiration = DateTimeOffset.Now.AddHours(1)
                 });
             await _authorRepository.DeleteAsync(s => s.Name == "asdas");
+
+            //var tt= ObjectMapper.Map<List<Author>, List<AuthorDto>>(ss);
+
             return new PagedResultDto<AuthorDto>()
             {
                 Rows = rows,
                 PageCount = pageSize,
-                RowCount = await query.CountAsync(),
+                RowCount =await query.CountAsync(),
                 PageSize = currentPage,
                 CurrentPage = currentPage,
             };

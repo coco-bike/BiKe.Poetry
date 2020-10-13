@@ -5,7 +5,7 @@ using Volo.Abp.Domain.Entities.Auditing;
 
 namespace BiKe.Poetry
 {
-    [Table("AppAuthor")]
+    [Table(name:"AppAuthors")]
     public class Author : AuditedAggregateRoot<Guid>
     {
         /// <summary>
