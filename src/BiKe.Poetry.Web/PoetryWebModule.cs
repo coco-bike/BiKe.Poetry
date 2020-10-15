@@ -6,7 +6,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using BiKe.Poetry.EntityFrameworkCore;
 using BiKe.Poetry.Localization;
-using BiKe.Poetry.MultiTenancy;
 using BiKe.Poetry.Web.Menus;
 using Microsoft.OpenApi.Models;
 using Volo.Abp;
@@ -26,15 +25,14 @@ using Volo.Abp.TenantManagement.Web;
 using Volo.Abp.UI.Navigation.Urls;
 using Volo.Abp.UI.Navigation;
 using Volo.Abp.VirtualFileSystem;
-using Volo.Abp.BackgroundJobs.Hangfire;
 using Volo.Abp.Caching;
 using Volo.Abp.AspNetCore.ExceptionHandling;
 using System;
-using Volo.Abp.BackgroundJobs;
 using Hangfire;
 using Hangfire.PostgreSql;
 using BiKe.Poetry.Event;
 using BiKe.Poetry.Setting;
+using BiKe.Poetry.Job;
 
 namespace BiKe.Poetry.Web
 {
@@ -49,7 +47,6 @@ namespace BiKe.Poetry.Web
         typeof(AbpAspNetCoreAuthenticationJwtBearerModule),
         typeof(AbpTenantManagementWebModule),
         typeof(AbpAspNetCoreSerilogModule),
-        typeof(AbpBackgroundJobsHangfireModule),
         typeof(AbpCachingModule)
         )]
     public class PoetryWebModule : AbpModule
@@ -84,32 +81,43 @@ namespace BiKe.Poetry.Web
             ConfigureNavigationServices();
             ConfigureAutoApiControllers();
             ConfigureSwaggerServices(context.Services);
-            ConfiguerCAP(context.Services, configuration);
-            ConfigureHangfire(context.Services, configuration);
-            ConfiguerException(context.Services);
+            ConfigureCAP(context.Services, configuration);
+            ConfigureHangFire(context.Services, configuration);
+
+            if (hostingEnvironment.IsDevelopment())
+            {
+                ConfigureException(context.Services);
+            }
         }
+
         /// <summary>
-        /// Hangfire后台任务
+        /// HangFire后台任务
         /// </summary>
-        /// <param name="context"></param>
+        /// <param name="services"></param>
         /// <param name="configuration"></param>
-        private void ConfigureHangfire(IServiceCollection services, IConfiguration configuration)
+        private void ConfigureHangFire(IServiceCollection services, IConfiguration configuration)
         {
-            services.AddHangfire(config =>
-            {
-                config.UsePostgreSqlStorage(configuration["ConnectionStrings:Default"]);
-            });
-            Configure<AbpBackgroundJobWorkerOptions>(options =>
-            {
-                options.DefaultTimeout = 864000; //10 days (as seconds)
-            });
+            //services.AddHangfire(config =>
+            //{
+            //    config.UsePostgreSqlStorage(configuration["ConnectionStrings:Default"]);
+            //});
+            //Configure<AbpBackgroundJobWorkerOptions>(options =>
+            //{
+            //    options.DefaultTimeout = 864000; //10 days (as seconds)
+            //});
+            services.AddHangfire(c => c
+                .UsePostgreSqlStorage(configuration["ConnectionStrings:Default"]));
+
+            // Add the processing server as IHostedService
+            services.AddHangfireServer();
         }
 
         /// <summary>
         /// CAP事件总线
         /// </summary>
         /// <param name="services"></param>
-        private void ConfiguerCAP(IServiceCollection services, IConfiguration configuration)
+        /// <param name="configuration"></param>
+        private void ConfigureCAP(IServiceCollection services, IConfiguration configuration)
         {
             services.AddDbContext<PoetryDbContext>(); //Options, If you are using EF as the ORM
 
@@ -142,7 +150,7 @@ namespace BiKe.Poetry.Web
         /// 异常抛出
         /// </summary>
         /// <param name="services"></param>
-        private void ConfiguerException(IServiceCollection services)
+        private void ConfigureException(IServiceCollection services)
         {
             services.Configure<AbpExceptionHandlingOptions>(options =>
             {
@@ -235,6 +243,15 @@ namespace BiKe.Poetry.Web
                 }
             );
         }
+        /// <summary>
+        /// 后台工作者(定时任务)
+        /// </summary>
+        /// <param name="context"></param>
+        private void AddBackgroundWorker(ApplicationInitializationContext context)
+        {
+            //context.AddBackgroundWorker<MyWorker>();
+            HangFireWorker.RunJob();
+        }
 
         public override void OnApplicationInitialization(ApplicationInitializationContext context)
         {
@@ -259,10 +276,7 @@ namespace BiKe.Poetry.Web
             app.UseAuthentication();
             app.UseJwtTokenMiddleware();
 
-            if (MultiTenancyConsts.IsEnabled)
-            {
-                app.UseMultiTenancy();
-            }
+            app.UseMultiTenancy();
 
             app.UseIdentityServer();
             app.UseAuthorization();
@@ -275,6 +289,8 @@ namespace BiKe.Poetry.Web
             app.UseAuditing();
             app.UseAbpSerilogEnrichers();
             app.UseConfiguredEndpoints();
+
+            AddBackgroundWorker(context);
         }
     }
 }

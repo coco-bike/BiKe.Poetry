@@ -1,5 +1,6 @@
 ﻿using BiKe.Poetry.EntityFrameworkCore;
 using DotNetCore.CAP;
+using Hangfire;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Distributed;
@@ -25,18 +26,21 @@ namespace BiKe.Poetry
         private readonly IRepository<Author, Guid> _authorRepository;
         private readonly ICapPublisher _capBus;
         private readonly IBackgroundJobManager _backgroundJobManager;
+        private readonly IBackgroundJobClient _backgroundJobs;
         private readonly IDistributedCache<List<AuthorDto>> _cache;
 
         public AuthorAppService(IRepository<Author, Guid> repository,
             ICapPublisher capPublisher,
             IBackgroundJobManager backgroundJobManager,
-            IDistributedCache<List<AuthorDto>> cache
+            IDistributedCache<List<AuthorDto>> cache,
+            IBackgroundJobClient backgroundJobs
             )
             : base(repository)
         {
             _authorRepository = repository;
             _capBus = capPublisher;
             _backgroundJobManager = backgroundJobManager;
+            _backgroundJobs = backgroundJobs;
             _cache = cache;
         }
         public async Task<PagedResultDto<AuthorDto>> ListResultDtoPageAsync(int currentPage, int pageSize, string name)
@@ -63,7 +67,7 @@ namespace BiKe.Poetry
             {
                 Rows = rows,
                 PageCount = pageSize,
-                RowCount =await query.CountAsync(),
+                RowCount = await query.CountAsync(),
                 PageSize = currentPage,
                 CurrentPage = currentPage,
             };
@@ -71,7 +75,8 @@ namespace BiKe.Poetry
         [HttpGet]
         public async Task<bool> TestJob()
         {
-            await _backgroundJobManager.EnqueueAsync(2, BackgroundJobPriority.Normal);
+            //await _backgroundJobManager.EnqueueAsync(2, BackgroundJobPriority.Normal);
+            _backgroundJobs.Enqueue(() => Console.WriteLine("Hello world from Hangfire!"));
             return true;
         }
     }

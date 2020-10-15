@@ -16,7 +16,7 @@ namespace BiKe.Poetry.Job
             timer,
             serviceScopeFactory)
         {
-            Timer.Period = 600000; //10 minutes
+            Timer.Period = 1000; //10 minutes
         }
 
 
