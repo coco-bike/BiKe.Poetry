@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 using Volo.Abp.BackgroundJobs;
@@ -18,6 +19,7 @@ using Volo.Abp.Domain.Repositories;
 
 namespace BiKe.Poetry
 {
+    [Authorize]
     public class AuthorAppService :
     CrudAppService<Author, AuthorDto, Guid, PagedAndSortedResultRequestDto,
                         CreateUpdateAuthorDto, CreateUpdateAuthorDto>,
@@ -47,7 +49,7 @@ namespace BiKe.Poetry
         {
             var query = _authorRepository.AsTracking();
             //var ss = PoetyFreeSqlDbContext.GetFreeSql().Select<Author>().ToList();
-            await _authorRepository.GetDbSet<Author, Guid>().AddRangeAsync();
+            //await _authorRepository.GetDbSet<Author, Guid>().AddRangeAsync();
             await _capBus.PublishAsync("now", DateTime.Now);
             await _backgroundJobManager.EnqueueAsync("asdada", BackgroundJobPriority.Normal);
             var rows = await _cache.GetOrAddAsync("PageList",
@@ -59,16 +61,16 @@ namespace BiKe.Poetry
                 {
                     AbsoluteExpiration = DateTimeOffset.Now.AddHours(1)
                 });
-            await _authorRepository.DeleteAsync(s => s.Name == "asdas");
+            //await _authorRepository.DeleteAsync(s => s.Name == "asdas");
 
             //var tt= ObjectMapper.Map<List<Author>, List<AuthorDto>>(ss);
-
+            Logger.LogInformation("adsadadad");
             return new PagedResultDto<AuthorDto>()
             {
                 Rows = rows,
                 PageCount = pageSize,
                 RowCount = await query.CountAsync(),
-                PageSize = currentPage,
+                PageSize = pageSize,
                 CurrentPage = currentPage,
             };
         }

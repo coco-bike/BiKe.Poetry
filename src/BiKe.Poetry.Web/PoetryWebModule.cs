@@ -250,7 +250,7 @@ namespace BiKe.Poetry.Web
         private void AddBackgroundWorker(ApplicationInitializationContext context)
         {
             //context.AddBackgroundWorker<MyWorker>();
-            HangFireWorker.RunJob();
+            HangFireJobRunner.Start();
         }
 
         public override void OnApplicationInitialization(ApplicationInitializationContext context)
