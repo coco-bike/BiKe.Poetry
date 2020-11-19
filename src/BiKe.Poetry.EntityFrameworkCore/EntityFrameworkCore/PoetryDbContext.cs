@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using BiKe.Poetry.DBEntityModel;
+using Microsoft.EntityFrameworkCore;
 using BiKe.Poetry.Users;
 using Volo.Abp.Data;
 using Volo.Abp.EntityFrameworkCore;
@@ -22,6 +23,8 @@ namespace BiKe.Poetry.EntityFrameworkCore
     {
         public DbSet<AppUser> Users { get; set; }
         public DbSet<Author> Authors { get; set; }
+        public DbSet<LunYu> LunYus { get; set; }
+
 
         /* Add DbSet properties for your Aggregate Roots / Entities here.
          * Also map them inside PoetryDbContextModelCreatingExtensions.ConfigurePoetry
