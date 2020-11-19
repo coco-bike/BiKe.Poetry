@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Volo.Abp.Http.Client.IdentityModel" Version="3.3.1" />
+    <PackageReference Include="Volo.Abp.Http.Client.IdentityModel" Version="3.2.1" />
     <ProjectReference Include="..\..\src\BiKe.Poetry.HttpApi.Client\BiKe.Poetry.HttpApi.Client.csproj" />
   </ItemGroup>
 

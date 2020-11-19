@@ -29,7 +29,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Volo.Abp.Autofac" Version="3.3.1" />
+    <PackageReference Include="Volo.Abp.Autofac" Version="3.2.1" />
     <ProjectReference Include="..\BiKe.Poetry.Application.Contracts\BiKe.Poetry.Application.Contracts.csproj" />
     <ProjectReference Include="..\BiKe.Poetry.EntityFrameworkCore.DbMigrations\BiKe.Poetry.EntityFrameworkCore.DbMigrations.csproj" />
   </ItemGroup>
