@@ -83,11 +83,13 @@ namespace BiKe.Poetry.Web
             ConfigureSwaggerServices(context.Services);
             ConfigureCAP(context.Services, configuration);
             ConfigureHangFire(context.Services, configuration);
-
+            
             if (hostingEnvironment.IsDevelopment())
             {
                 ConfigureException(context.Services);
             }
+
+            context.Services.ConfigureNonBreakingSameSiteCookies();
         }
 
         /// <summary>
@@ -269,6 +271,8 @@ namespace BiKe.Poetry.Web
             {
                 app.UseErrorPage();
             }
+
+            app.UseCookiePolicy();
 
             app.UseCorrelationId();
             app.UseVirtualFiles();
