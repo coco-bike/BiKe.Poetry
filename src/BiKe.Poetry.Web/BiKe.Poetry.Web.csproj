@@ -57,14 +57,14 @@
     <ProjectReference Include="..\BiKe.Poetry.Application\BiKe.Poetry.Application.csproj" />
     <ProjectReference Include="..\BiKe.Poetry.HttpApi\BiKe.Poetry.HttpApi.csproj" />
     <ProjectReference Include="..\BiKe.Poetry.EntityFrameworkCore.DbMigrations\BiKe.Poetry.EntityFrameworkCore.DbMigrations.csproj" />
-    <PackageReference Include="Volo.Abp.AspNetCore.Mvc.UI.Theme.Basic" Version="3.2.1" />
-    <PackageReference Include="Volo.Abp.Autofac" Version="3.2.1" />
-    <PackageReference Include="Volo.Abp.AspNetCore.Authentication.JwtBearer" Version="3.2.1" />
-    <PackageReference Include="Volo.Abp.AspNetCore.Serilog" Version="3.2.1" />
-    <PackageReference Include="Volo.Abp.Identity.Web" Version="3.2.1" />
-    <PackageReference Include="Volo.Abp.Account.Web.IdentityServer" Version="3.2.1" />
-    <PackageReference Include="Volo.Abp.TenantManagement.Web" Version="3.2.1" />
-    <PackageReference Include="Volo.Abp.FeatureManagement.Web" Version="3.2.1" />
+    <PackageReference Include="Volo.Abp.AspNetCore.Mvc.UI.Theme.Basic" Version="3.3.1" />
+    <PackageReference Include="Volo.Abp.Autofac" Version="3.3.1" />
+    <PackageReference Include="Volo.Abp.AspNetCore.Authentication.JwtBearer" Version="3.3.1" />
+    <PackageReference Include="Volo.Abp.AspNetCore.Serilog" Version="3.3.1" />
+    <PackageReference Include="Volo.Abp.Identity.Web" Version="3.3.1" />
+    <PackageReference Include="Volo.Abp.Account.Web.IdentityServer" Version="3.3.1" />
+    <PackageReference Include="Volo.Abp.TenantManagement.Web" Version="3.3.1" />
+    <PackageReference Include="Volo.Abp.FeatureManagement.Web" Version="3.3.1" />
   </ItemGroup>
 
 </Project>
