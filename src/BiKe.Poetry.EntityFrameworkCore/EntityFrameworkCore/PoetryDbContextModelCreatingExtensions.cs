@@ -34,6 +34,16 @@ namespace BiKe.Poetry.EntityFrameworkCore
                 b.Property(x => x.Chapter).IsRequired();
                 b.Property(x => x.Paragraphs).HasMaxLength(1000);
             });
+            builder.Entity<ShiJing>(b =>
+            {
+                b.ToTable(PoetryConsts.DbTablePrefix + "ShiJings", PoetryConsts.DbSchema);
+                b.ConfigureByConvention(); //auto configure for the base class props
+                b.Property(x => x.Chapter).IsRequired();
+                b.Property(x => x.Title).IsRequired();
+                b.Property(x => x.Content).HasMaxLength(1000);
+                b.Property(x => x.Section).HasMaxLength(1000);
+                b.Property(x => x.Tests).HasColumnType("jsonb");
+            });
         }
     }
 }

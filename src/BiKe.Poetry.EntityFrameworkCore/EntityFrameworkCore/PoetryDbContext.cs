@@ -25,6 +25,7 @@ namespace BiKe.Poetry.EntityFrameworkCore
         public DbSet<Author> Authors { get; set; }
         public DbSet<LunYu> LunYus { get; set; }
 
+        public DbSet<ShiJing> ShiJings { get; set; }
 
         /* Add DbSet properties for your Aggregate Roots / Entities here.
          * Also map them inside PoetryDbContextModelCreatingExtensions.ConfigurePoetry
