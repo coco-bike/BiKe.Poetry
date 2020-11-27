@@ -6,6 +6,8 @@ namespace BiKe.Poetry.Setting
 {
     public static class ConfigurationSetting
     {
-        public static string ConnectionString; 
+        public static string ConnectionString;
+
+        public static string ElasticConfigurationUrl;
     }
 }
