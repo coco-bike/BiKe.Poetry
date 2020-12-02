@@ -21,6 +21,7 @@ namespace BiKe.Poetry.Web
                 .MinimumLevel.Override("Microsoft.EntityFrameworkCore", LogEventLevel.Warning)
                 .Enrich.FromLogContext()
                 .WriteTo.Async(c => c.Console())
+                //ELK日志收集
                 .WriteTo.Elasticsearch(
                     new ElasticsearchSinkOptions(new Uri("http://127.0.0.1:9200/"))
                     {

@@ -89,7 +89,6 @@ namespace BiKe.Poetry.Web
             {
                 ConfigureException(context.Services);
             }
-
             context.Services.ConfigureNonBreakingSameSiteCookies();
         }
 
