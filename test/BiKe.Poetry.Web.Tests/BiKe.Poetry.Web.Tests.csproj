@@ -1,9 +1,9 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <Import Project="..\..\common.props" />
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
     <OutputType>Exe</OutputType>
     <AssetTargetFallback>$(AssetTargetFallback);portable-net45+win8+wp8+wpa81;</AssetTargetFallback>
     <RootNamespace>BiKe.Poetry</RootNamespace>
@@ -17,7 +17,7 @@
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.7.1" />
     <ProjectReference Include="..\BiKe.Poetry.Application.Tests\BiKe.Poetry.Application.Tests.csproj" />
     <ProjectReference Include="..\..\src\BiKe.Poetry.Web\BiKe.Poetry.Web.csproj" />
-    <PackageReference Include="Volo.Abp.AspNetCore.TestBase" Version="3.2.1" />
+    <PackageReference Include="Volo.Abp.AspNetCore.TestBase" Version="4.1.1" />
   </ItemGroup>
 
   <ItemGroup>

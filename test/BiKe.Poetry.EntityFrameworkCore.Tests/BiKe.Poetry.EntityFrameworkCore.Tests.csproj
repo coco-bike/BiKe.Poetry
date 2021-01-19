@@ -1,16 +1,16 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <Import Project="..\..\common.props" />
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
     <RootNamespace>BiKe.Poetry</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\BiKe.Poetry.EntityFrameworkCore.DbMigrations\BiKe.Poetry.EntityFrameworkCore.DbMigrations.csproj" />
     <ProjectReference Include="..\BiKe.Poetry.TestBase\BiKe.Poetry.TestBase.csproj" />
-    <PackageReference Include="Volo.Abp.EntityFrameworkCore.Sqlite" Version="3.2.1" />
+    <PackageReference Include="Volo.Abp.EntityFrameworkCore.Sqlite" Version="4.1.1" />
   </ItemGroup>
 
   <ItemGroup>

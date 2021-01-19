@@ -15,6 +15,10 @@
         <abp-script src="/Pages/Index.js" />
     </abp-script-bundle>
 }
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+}
 <div class="jumbotron text-center">
     <h1>@L["Welcome"]</h1>
     <div class="row">

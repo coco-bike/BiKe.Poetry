@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 using Serilog.Events;
+using Serilog.Sinks.Elasticsearch;
 
 namespace BiKe.Poetry.Web
 {
@@ -19,7 +20,14 @@ namespace BiKe.Poetry.Web
                 .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
                 .MinimumLevel.Override("Microsoft.EntityFrameworkCore", LogEventLevel.Warning)
                 .Enrich.FromLogContext()
-                .WriteTo.Async(c => c.File("Logs/logs.txt"))
+                .WriteTo.Async(c => c.Console())
+                //ELK日志收集
+                .WriteTo.Elasticsearch(
+                    new ElasticsearchSinkOptions(new Uri("http://127.0.0.1:9200/"))
+                    {
+                        MinimumLogEventLevel = LogEventLevel.Verbose,
+                        AutoRegisterTemplate = true
+                    })
                 .CreateLogger();
 
             try

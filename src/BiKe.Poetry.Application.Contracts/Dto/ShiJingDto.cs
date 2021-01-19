@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using Volo.Abp.Domain.Entities.Auditing;
+using System.Text;
+using Volo.Abp.Application.Dtos;
 
-namespace BiKe.Poetry.DBEntityModel
+namespace BiKe.Poetry.Dto
 {
-    public class ShiJing : AuditedEntity<Guid>
+    public class ShiJingDto : AuditedEntityDto<Guid>
     {
         /// <summary>
         /// 词牌名
@@ -28,26 +29,14 @@ namespace BiKe.Poetry.DBEntityModel
         /// <summary>
         /// 测试
         /// </summary>
-        public List<Test> Tests { get; set; }
-
-        protected ShiJing()
-        {
-        }
-        public ShiJing(Guid id, string chapter, string section,string content,string title)
-        : base(id)
-        {
-            Id = id;
-            Chapter = chapter;
-            Section = section;
-            Content = content;
-            Title = title;
-        }
+        public List<TestDto> Tests { get; set; }
     }
 
-    public class Test
+    public class TestDto
     {
         public string Name { get; set; }
 
         public int Count { get; set; }
     }
+
 }

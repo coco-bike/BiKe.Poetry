@@ -15,6 +15,9 @@ COPY ["src/BiKe.Poetry.EntityFrameworkCore.DbMigrations/BiKe.Poetry.EntityFramew
 COPY ["src/BiKe.Poetry.EntityFrameworkCore/BiKe.Poetry.EntityFrameworkCore.csproj", "src/BiKe.Poetry.EntityFrameworkCore/"]
 COPY ["src/BiKe.Poetry.Domain/BiKe.Poetry.Domain.csproj", "src/BiKe.Poetry.Domain/"]
 COPY ["src/BiKe.Poetry.Application/BiKe.Poetry.Application.csproj", "src/BiKe.Poetry.Application/"]
+
+ENV ASPNETCORE_ENVIRONMENT1 Production
+
 RUN dotnet restore "src/BiKe.Poetry.Web/BiKe.Poetry.Web.csproj"
 COPY . .
 WORKDIR "/src/src/BiKe.Poetry.Web"

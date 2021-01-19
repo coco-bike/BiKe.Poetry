@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
-using System.Linq;
+using BiKe.Poetry.DBEntityModel;
+using BiKe.Poetry.Dto;
 
 namespace BiKe.Poetry
 {
@@ -14,9 +15,17 @@ namespace BiKe.Poetry
 
             CreateMap<CreateUpdateAuthorDto, Author>();
 
-            //CreateMap<LunYu, LunYuDto>();
+            CreateMap<LunYu, LunYuDto>();
 
-            //CreateMap<CreateUpdateLunYuDto, LunYu>();
+            CreateMap<CreateUpdateLunYuDto, LunYu>();
+
+            CreateMap<CreateUpdateShiJingDto, ShiJing>();
+
+            CreateMap<ShiJing, ShiJingDto>();
+
+            CreateMap<TestDto, DBEntityModel.Test>();
+
+            CreateMap<DBEntityModel.Test, TestDto>();
         }
     }
 }
