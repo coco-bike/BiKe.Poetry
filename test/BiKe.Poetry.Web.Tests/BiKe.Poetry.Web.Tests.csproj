@@ -14,10 +14,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.7.1" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.8.3" />
     <ProjectReference Include="..\BiKe.Poetry.Application.Tests\BiKe.Poetry.Application.Tests.csproj" />
     <ProjectReference Include="..\..\src\BiKe.Poetry.Web\BiKe.Poetry.Web.csproj" />
-    <PackageReference Include="Volo.Abp.AspNetCore.TestBase" Version="4.1.1" />
+    <PackageReference Include="Volo.Abp.AspNetCore.TestBase" Version="4.1.2" />
   </ItemGroup>
 
   <ItemGroup>
