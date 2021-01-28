@@ -72,7 +72,6 @@ namespace BiKe.Poetry.Web
             var configuration = context.Services.GetConfiguration();
 
             ConfigurationSetting.ConnectionString = configuration["ConnectionStrings:Default"];
-            ConfigurationSetting.ElasticConfigurationUrl = configuration["ElasticConfiguration:Uri"];
 
             ConfigureUrls(configuration);
             ConfigureAuthentication(context, configuration);

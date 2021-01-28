@@ -6,10 +6,6 @@
     <TargetFramework>net5.0</TargetFramework>
     <RootNamespace>BiKe.Poetry</RootNamespace>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Remove="EntityFrameworkCore\PoetyFreeSqlDbContext.cs" />
-  </ItemGroup>
   
   <ItemGroup>
     <ProjectReference Include="..\BiKe.Poetry.Domain\BiKe.Poetry.Domain.csproj" />

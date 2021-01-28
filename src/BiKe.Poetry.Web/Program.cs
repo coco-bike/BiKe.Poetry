@@ -1,5 +1,7 @@
 ﻿using System;
+using BiKe.Poetry.Setting;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 using Serilog.Events;
@@ -11,6 +13,19 @@ namespace BiKe.Poetry.Web
     {
         public static int Main(string[] args)
         {
+            #region 配置文件
+            var builder = new ConfigurationBuilder()
+                .AddJsonFile("appsettings.Development.json");
+            var configuration = builder.Build();
+            //var host=new HostBuilder();
+            //var hostingEnvironment = host.Build();
+            //if (hostingEnvironment.Services.get)
+            //{
+                
+            //}
+            ConfigurationSetting.ElasticConfigurationUrl = configuration["ElasticConfiguration:Uri"];
+            #endregion
+
             Log.Logger = new LoggerConfiguration()
 #if DEBUG
                 .MinimumLevel.Debug()
@@ -23,7 +38,7 @@ namespace BiKe.Poetry.Web
                 .WriteTo.Async(c => c.Console())
                 //ELK日志收集
                 .WriteTo.Elasticsearch(
-                    new ElasticsearchSinkOptions(new Uri("http://127.0.0.1:9200/"))
+                    new ElasticsearchSinkOptions(new Uri(ConfigurationSetting.ElasticConfigurationUrl))
                     {
                         MinimumLogEventLevel = LogEventLevel.Verbose,
                         AutoRegisterTemplate = true
