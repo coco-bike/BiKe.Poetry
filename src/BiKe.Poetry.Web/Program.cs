@@ -13,19 +13,15 @@ namespace BiKe.Poetry.Web
     {
         public static int Main(string[] args)
         {
-            #region 配置文件
-//            var builder = new ConfigurationBuilder()
-
-//#if DEBUG
-//                .AddJsonFile("appsettings.Development.json");
-//#else
-//                .AddJsonFile("appsettings.Production.json");
-//#endif
-
-
-
-//            var configuration = builder.Build();
-//            ConfigurationSetting.ElasticConfigurationUrl = configuration["ElasticConfiguration:Uri"];
+            #region 生产配置文件导入
+            var builder = new ConfigurationBuilder()
+#if DEBUG
+            .AddJsonFile("appsettings.Development.json");
+#else
+            .AddJsonFile("appsettings.Production.json");
+#endif
+            var configuration = builder.Build();
+            ConfigurationSetting.ElasticConfigurationUrl = configuration["ElasticConfiguration:Uri"];
             #endregion
 
             Log.Logger = new LoggerConfiguration()
@@ -39,13 +35,14 @@ namespace BiKe.Poetry.Web
                 .Enrich.FromLogContext()
                 .WriteTo.Async(c => c.Console())
                 //ELK日志收集
-                //.WriteTo.Elasticsearch(
-                //    new ElasticsearchSinkOptions(new Uri(ConfigurationSetting.ElasticConfigurationUrl))
-                //    {
-                //        MinimumLogEventLevel = LogEventLevel.Verbose,
-                //        AutoRegisterTemplate = true
-                //    })
+                .WriteTo.Elasticsearch(
+                    new ElasticsearchSinkOptions(new Uri(ConfigurationSetting.ElasticConfigurationUrl))
+                    {
+                        MinimumLogEventLevel = LogEventLevel.Verbose,
+                        AutoRegisterTemplate = true
+                    })
                 .CreateLogger();
+
 
             try
             {
